@@ -82,7 +82,7 @@
           <h3>Wind Speed: ${res.data.wind.speed}</h3>
          
         `
-          // Axios.get for UV Index
+          
           axios.get("http://api.openweathermap.org/data/2.5/uvi?appid=1dd25ac798a84daed3b612ef4b3c9a3e&lat=" + lat + "&lon=" + lon)
             .then(res => {
               console.log()
@@ -94,7 +94,7 @@
               document.getElementById('uvIndex').innerHTML = `
             <p> UV Index: ${res.data.value} </p>
             `
-              // Color coding for UV Index's
+              
               if (uv >= 0 && uv <= 2) { document.getElementById("uvIndex").style.backgroundColor = "green" }
               else if (uv >= 3 && uv <= 5) { document.getElementById("uvIndex").style.backgroundColor = "yellow" }
               else { document.getElementById("uvIndex").style.backgroundColor = "red" }
