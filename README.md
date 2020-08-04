@@ -13,3 +13,6 @@ Along with the weather conditions; you will be prodvided with the:
 
 These values were derived by pulling information from an API (Application Programming Interface).
 
+Link to deployed website: https://datrimboli.github.io/HW06WeatherDashboard/
+
+Screenshot of app located in Screenshot folder.
