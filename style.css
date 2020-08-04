@@ -1,36 +1,36 @@
+/* Styling for header */
 .margin {
   margin-top: 20px;
 }
-
-.demo{
-  background-color:blue;
+/* Styling for 5 day forecast */
+.demo {
+  background-color: blue;
   width: 20%;
   border-radius: 10px;
   text-align: center;
 }
-
+/* Styling for forcast layout */
 #forecast {
   display: flex;
 }
-
+/* Centering current weather */
 #weather {
   text-align: center;
 }
-
+/* Centering/styling for jumbotron */
 .center {
   text-align: center;
   height: 200px;
 }
-
+/* Centering UV Index text */
 #uvIndex {
   text-align: center;
-
 }
-
+/* Placement of search input */
 .move {
   margin-left: 125px;
 }
-
+/* Placement of search button */
 .over {
   margin-left: 50px;
 }
