@@ -76,6 +76,7 @@
           console.log(res.data)
           document.getElementById('weather').innerHTML = `
           <h1>${res.data.name}</h1>
+          <img src="http://openweathermap.org/img/w/${res.data.weather[0].icon}.png" class="img-fluid" alt="Weather icon">
           <h2>Weather: ${res.data.weather[0].description}</h2>
           <h3>Temperature: ${res.data.main.temp}</h3>
           <h3>Humidity: ${res.data.main.humidity}</h3>
@@ -116,6 +117,7 @@
             forecastElem.classList.add("demo")
             forecastElem.innerHTML = `
               <h1>${forecast[i].dt_txt}</h1>
+              <img src="http://openweathermap.org/img/w/${forecast[i].weather[0].icon}.png" class="img-fluid" alt="Weather icon">
               <h2>Weather: ${forecast[i].weather[0].description}</h2>
               <h3>Temperature: ${forecast[i].main.temp}</h3>
               <h3>Humidity: ${forecast[i].main.humidity}</h3>
@@ -128,6 +130,21 @@
 
 
     })
+
+  let items = JSON.parse(localStorage.getItem('items')) || []
+
+  for (let i = 0; i < items.length; i++) {
+    let itemElem = document.createElement('li')
+
+    itemElem.dataset.item = items[i].text
+
+
+    itemElem.innerHTML = `
+        ${items[i].text}
+        
+      `
+    document.getElementById('items').append(itemElem)
+  }
 
 
 // Bootstrap Javascript Link
