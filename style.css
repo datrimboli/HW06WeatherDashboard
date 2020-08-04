@@ -1,0 +1,14 @@
+.margin {
+  margin-top: 20px;
+}
+
+.demo{
+  background-color:blue;
+  width: 20%;
+  border-radius: 10px;
+  text-align: center;
+}
+
+#forecast {
+  display: flex;
+}
