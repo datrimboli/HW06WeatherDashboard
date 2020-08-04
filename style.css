@@ -12,3 +12,17 @@
 #forecast {
   display: flex;
 }
+
+#weather {
+  text-align: center;
+}
+
+.center {
+  text-align: center;
+  height: 200px;
+}
+
+#uvIndex {
+  text-align: center;
+
+}
