@@ -23,6 +23,11 @@
       Weather Dashboard
     </a>
   </nav>
+<!-- Previous searched cities. left side column -->
+<div class="col-sm">
+  
+  <div id="previousContainer"></div>
+  
 
 
 
@@ -58,6 +63,82 @@
 
   <script>
 
+    let searchHistory = JSON.parse(localStorage.getItem("history")) ||[]
+    
+    function buttons() { 
+    document.getElementById("previousContainer").innerHTML = ''  
+    for (var i = 0; i < searchHistory.length; i ++) {
+      console.log(searchHistory[i])
+      var btn = document.createElement("button")
+      btn.textContent=searchHistory[i]
+      document.getElementById("previousContainer").appendChild(btn)
+      btn.addEventListener('click',function(){
+        console.log(this.textContent)
+        axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=1dd25ac798a84daed3b612ef4b3c9a3e`)
+          .then(res => {
+            lon = res.data.coord.lon
+            lat = res.data.coord.lat
+
+            console.log(res.data)
+            document.getElementById('weather').innerHTML = `
+          <h1>${res.data.name}</h1>
+          <img src="https://openweathermap.org/img/w/${res.data.weather[0].icon}.png" class="img-fluid" alt="Weather icon">
+          <h2>Weather: ${res.data.weather[0].description}</h2>
+          <h3>Temperature: ${res.data.main.temp}</h3>
+          <h3>Humidity: ${res.data.main.humidity}</h3>
+          <h3>Wind Speed: ${res.data.wind.speed}</h3>
+         
+        `
+
+            axios.get("https://api.openweathermap.org/data/2.5/uvi?appid=1dd25ac798a84daed3b612ef4b3c9a3e&lat=" + lat + "&lon=" + lon)
+              .then(res => {
+                console.log()
+
+                console.log(res.data)
+                event.preventDefault()
+                let uv = res.data.value
+                uvResulter = uv
+                document.getElementById('uvIndex').innerHTML = `
+            <p> UV Index: ${res.data.value} </p>
+            `
+
+                if (uv >= 0 && uv <= 2) { document.getElementById("uvIndex").style.backgroundColor = "green" }
+                else if (uv >= 3 && uv <= 5) { document.getElementById("uvIndex").style.backgroundColor = "yellow" }
+                else { document.getElementById("uvIndex").style.backgroundColor = "red" }
+              })
+              .catch(err => { console.log(err) })
+          })
+          .catch(err => { console.log(err) })
+
+        // Axios.get for 5 day forecast
+        axios.get(`https://api.openweathermap.org/data/2.5/forecast?q=${this.textContent}&units=imperial&appid=1dd25ac798a84daed3b612ef4b3c9a3e`)
+          .then(res => {
+            let forecast = res.data.list
+            document.getElementById('forecast').innerHTML = ''
+            for (let i = 5; i < forecast.length; i += 8) {
+              console.log(forecast[i])
+              let forecastElem = document.createElement('div')
+              forecastElem.classList.add("demo")
+              forecastElem.innerHTML = `
+              <h1>${forecast[i].dt_txt}</h1>
+              <img src="http://openweathermap.org/img/w/${forecast[i].weather[0].icon}.png" class="img-fluid" alt="Weather icon">
+              <h2>Weather: ${forecast[i].weather[0].description}</h2>
+              <h3>Temperature: ${forecast[i].main.temp}</h3>
+              <h3>Humidity: ${forecast[i].main.humidity}</h3>
+              <h3>Wind Speed: ${forecast[i].wind.speed}</h3>
+             `
+              document.getElementById('forecast').append(forecastElem)
+            }
+          })
+          .catch(err => { console.log(err) })
+
+
+      })
+        
+      
+    }}
+buttons()
+console.log(searchHistory)
 
     // CLick event added to searh button
     document.getElementById('search').addEventListener('click', event => {
@@ -67,7 +148,13 @@
       let city = document.getElementById('city').value
       let lon
       let lat
+      if (!searchHistory.includes(city)){
+      searchHistory.push(city)
+      localStorage.setItem("history",JSON.stringify(searchHistory))
+        
+      }
       // Axios.get for pulling current weather
+      buttons()
       axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=1dd25ac798a84daed3b612ef4b3c9a3e`)
         .then(res => {
           lon = res.data.coord.lon
@@ -104,9 +191,7 @@
         })
         .catch(err => { console.log(err) })
 
-
-
-      // Axios.get for 5 day forecast
+       // Axios.get for 5 day forecast
       axios.get(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=imperial&appid=1dd25ac798a84daed3b612ef4b3c9a3e`)
         .then(res => {
           let forecast = res.data.list
@@ -131,22 +216,7 @@
 
     })
 
-  let items = JSON.parse(localStorage.getItem('items')) || []
-
-  for (let i = 0; i < items.length; i++) {
-    let itemElem = document.createElement('li')
-
-    itemElem.dataset.item = items[i].text
-
-
-    itemElem.innerHTML = `
-        ${items[i].text}
-        
-      `
-    document.getElementById('items').append(itemElem)
-  }
-
-
+ 
 // Bootstrap Javascript Link
   </script>
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
